@@ -1,5 +1,5 @@
 /*
-    PROCEDURE 1
+    Dodawanie klientow do bazy danych
 */
 
 CREATE OR REPLACE PROCEDURE zaladujKlientow
@@ -83,6 +83,8 @@ END;
 
 -- TEST -->
 
+SET SERVEROUTPUT ON;
+
 SELECT 
     *
 FROM 
@@ -96,5 +98,7 @@ SELECT
     *
 FROM 
     Klienci;
-    
+
+ROLLBACK;
+
 -- TEST <--
