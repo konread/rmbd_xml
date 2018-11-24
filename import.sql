@@ -1,4 +1,6 @@
-/*dodawanie uprawnien*/
+/*
+dodawanie uprawnien
+*/
 CREATE OR REPLACE DIRECTORY 
     XMLFILES 
 AS 
@@ -6,7 +8,9 @@ AS
 GRANT READ, WRITE ON DIRECTORY XMLFILES TO slaby;
 COMMIT;
 
+
 /*
+--------------------------------------------------
 odczyt pliku XML
 */
 CREATE OR REPLACE FUNCTION odczytPlikuXML(directoryName VARCHAR2, rootNodeName VARCHAR2, childNodeName VARCHAR2)
@@ -38,7 +42,35 @@ END;
 ROLLBACK;
 -- TEST <--
 
+
 /*
+--------------------------------------------------
+funkcja sprawdzajaca czy w podanym stringu jest poprawna wartosc numeryczna
+*/
+CREATE OR REPLACE FUNCTION is_number (p_string VARCHAR2)
+   RETURN INT
+IS
+    v_new_num NUMBER;
+    BEGIN
+        v_new_num := TO_NUMBER(p_string);
+        RETURN 1;
+        
+    EXCEPTION
+        WHEN VALUE_ERROR THEN
+        RETURN 0;
+END;
+
+-- TEST -->
+SET SERVEROUTPUT ON;
+
+SELECT is_number('a') FROM dual;
+
+ROLLBACK;
+-- TEST <--
+
+
+/*
+--------------------------------------------------
 import pliku XML z klientami
 */
 CREATE OR REPLACE PROCEDURE wczytajKlientow(directoryName VARCHAR2)
@@ -57,6 +89,11 @@ IS
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'pesel/text()',pesel);
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'imie/text()',imie);
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'nazwisko/text()',nazwisko);
+            
+            IF is_number(id_klienta) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawne id_klienta! Wartosc nie jest wartoscia numeryczna! Pesel Klienta:' || pesel);
+                RETURN;
+            END IF;
             
             INSERT INTO Klienci(id_klienta, pesel, imie, nazwisko) VALUES(id_klienta, pesel, imie, nazwisko);
          END LOOP;
@@ -78,7 +115,9 @@ END;
 ROLLBACK;
 -- TEST <--
 
+
 /*
+--------------------------------------------------
 import pliku XML z Pokojami
 */
 CREATE OR REPLACE PROCEDURE wczytajPokoje(directoryName VARCHAR2)
@@ -97,6 +136,20 @@ IS
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'numer/text()',numer);
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'liczba_osob/text()',liczba_osob);
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'status/text()',status);
+            
+            IF is_number(id_pokoju) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawne id_pokoju! Wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_number(numer) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawny numer pokoju! Wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_number(liczba_osob) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawna liczba_osob! Wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF status != 'W' AND status != 'Z'  THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawny status! Dozwolone wartosci: W,Z');
+                RETURN;
+            END IF;
             
             INSERT INTO Pokoje(id_pokoju, numer, liczba_osob, status) VALUES(id_pokoju, numer, liczba_osob, status);
          END LOOP;
@@ -118,7 +171,9 @@ END;
 ROLLBACK;
 -- TEST <--
 
+
 /*
+--------------------------------------------------
 import pliku XML z Cenami Pokoi
 */
 CREATE OR REPLACE PROCEDURE wczytajCenyPokoi(directoryName VARCHAR2)
@@ -162,7 +217,9 @@ END;
 ROLLBACK;
 -- TEST <--
 
+
 /*
+--------------------------------------------------
 import pliku XML z Rezerwacjami
 */
 CREATE OR REPLACE PROCEDURE wczytajRezerwacje(directoryName VARCHAR2)
@@ -208,7 +265,9 @@ END;
 ROLLBACK;
 -- TEST <--
 
+
 /*
+--------------------------------------------------
 import pliku XML z Wyposazeniami
 */
 CREATE OR REPLACE PROCEDURE wczytajWyposazenia(directoryName VARCHAR2)
@@ -248,7 +307,9 @@ END;
 ROLLBACK;
 -- TEST <--
 
+
 /*
+--------------------------------------------------
 import pliku XML z Wyposazeniami_pokoi
 */
 CREATE OR REPLACE PROCEDURE wczytajWyposazeniaPokoi(directoryName VARCHAR2)
