@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Ceny_pokoi>
+<Ceny_pokoi xsi:noNamespaceSchemaLocation="CenyPokoi.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Cena_pokoju>
         <id_ceny_pokoju>1</id_ceny_pokoju>
         <cena>150</cena>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Rezerwacje>
+<Rezerwacje xsi:noNamespaceSchemaLocation="Rezerwacje.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Rezerwacja>
         <id_rezerwacji>1</id_rezerwacji>
         <data_rezerwacji>2018-08-12</data_rezerwacji>
