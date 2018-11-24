@@ -433,13 +433,13 @@ ROLLBACK;
 -- TEST <--
 
 /*
-import pliku XML z dopisaniem danych do istniejÄ…cego wiersza
+import pliku XML z dopisaniem danych do istniejacego wiersza
 */
 
 CREATE OR REPLACE PROCEDURE import_danych_klienta(name_file VARCHAR2)
 IS
     xml_content XMLTYPE := XMLTYPE(bfilename('XMLFILES', name_file || '.xml'),nls_charset_id('AL32UTF8'));
-    
+     
     BEGIN
         FOR klient IN 
         (
@@ -451,16 +451,28 @@ IS
             FROM   
                 TABLE(XMLSequence(EXTRACT(xml_content,'/Klient'))) k
         ) 
-        LOOP
+        LOOP            
+            IF klient.xml_id IS NULL THEN
+                DBMS_OUTPUT.PUT_LINE('Brak elementu id dla wêz³a klient!');
+                RETURN;
+            ELSIF is_number(klient.xml_id) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawna wartosc id_klienta!');
+                RETURN;
+            END IF;
+            
             UPDATE 
                 Klienci
             SET
-                pesel = klient.xml_pesel,
-                imie = klient.xml_imie,
-                nazwisko = klient.xml_nazwisko
+                pesel = CASE WHEN klient.xml_pesel IS NULL THEN pesel ELSE klient.xml_pesel END,
+                imie = CASE WHEN klient.xml_imie IS NULL THEN imie ELSE klient.xml_imie END,
+                nazwisko = CASE WHEN klient.xml_nazwisko IS NULL THEN nazwisko ELSE klient.xml_nazwisko END
             WHERE 
                 id_klienta = klient.xml_id;
         END LOOP;       
+        
+        EXCEPTION
+            WHEN OTHERS THEN
+                DBMS_OUTPUT.PUT_LINE(SQLERRM);
     END;
     
 -- TEST -->  

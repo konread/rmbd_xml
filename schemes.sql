@@ -26,7 +26,7 @@ END;
 
 
 /*
- dodawanie schemy dla klientow
+ dodawanie schemy dla pokojow
 */
 BEGIN
 --DBMS_XMLSCHEMA.DELETESCHEMA('Pokoje.xsd');
