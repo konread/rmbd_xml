@@ -47,7 +47,7 @@ ROLLBACK;
 --------------------------------------------------
 funkcja sprawdzajaca czy w podanym stringu jest poprawna wartosc numeryczna
 */
-CREATE OR REPLACE FUNCTION is_number (p_string VARCHAR2)
+CREATE OR REPLACE FUNCTION is_number(p_string VARCHAR2)
    RETURN INT
 IS
     v_new_num NUMBER;
@@ -64,6 +64,32 @@ END;
 SET SERVEROUTPUT ON;
 
 SELECT is_number('a') FROM dual;
+
+ROLLBACK;
+-- TEST <--
+
+
+/*
+--------------------------------------------------
+funkcja sprawdzajaca czy w podanym stringu jest poprawna data
+*/
+CREATE OR REPLACE FUNCTION is_date(p_string VARCHAR2)
+   RETURN INT
+IS
+    v_date date;
+    BEGIN
+        SELECT TO_DATE(p_string, 'RRRR-MM-DD') into v_date from dual;
+        RETURN 1;
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+        RETURN 0;
+END;
+
+-- TEST -->
+SET SERVEROUTPUT ON;
+
+SELECT is_date('2018-01-06') FROM dual;
 
 ROLLBACK;
 -- TEST <--
@@ -197,6 +223,23 @@ IS
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'id_pokoju/text()',id_pokoju);
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'status/text()',status);
             
+            IF is_number(id_ceny_pokoju) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawne id_ceny_pokoju! Podana wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_number(cena) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawna cena pokoju! Wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_number(id_pokoju) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawne id_pokoju! Wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_date(data_obowiazywania_od) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawn data_obowiazywania_od! Wartosc nie jest typu date. Akceptowalny format: RRRR-MM-DD');
+                RETURN;
+            ELSIF status != 'A' AND status != 'N'  THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawny status! Dozwolone wartosci: A,N');
+                RETURN;
+            END IF;
+            
             INSERT INTO Ceny_pokoi(id_ceny_pokoju, cena, data_obowiazywania_od, data_obowiazywania_do, id_pokoju, status) VALUES(id_ceny_pokoju, cena, data_obowiazywania_od, data_obowiazywania_do, id_pokoju, status);
          END LOOP;
   
@@ -245,6 +288,29 @@ IS
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'id_klienta/text()',id_klienta);
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'id_pokoju/text()',id_pokoju);
             
+            IF is_number(id_rezerwacji) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawne id_rezerwacji! Podana wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_date(data_rezerwacji) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawna data_rezerwacji! Wartosc nie jest typu date. Akceptowalny format: RRRR-MM-DD');
+                RETURN;
+            ELSIF is_date(data_przyjazdu) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawna data_przyjazdu! Wartosc nie jest typu date. Akceptowalny format: RRRR-MM-DD');
+                RETURN;
+            ELSIF is_date(data_wyjazdu) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawna data_wyjazdu! Wartosc nie jest typu date. Akceptowalny format: RRRR-MM-DD');
+                RETURN;
+            ELSIF status != 'Z' AND status != 'N'  THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawny status! Dozwolone wartosci: Z,N');
+                RETURN;
+            ELSIF is_number(id_klienta) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawny id_klienta! Wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_number(id_pokoju) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawny id_pokoju! Wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            END IF;
+            
             INSERT INTO Rezerwacje(id_rezerwacji, data_rezerwacji, data_przyjazdu, data_wyjazdu, status, id_klienta, id_pokoju) VALUES(id_rezerwacji, data_rezerwacji, data_przyjazdu, data_wyjazdu, status, id_klienta, id_pokoju);
          END LOOP;
   
@@ -287,6 +353,17 @@ IS
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'liczba_szt_calk/text()',liczba_szt_calk);
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'liczba_szt_dost/text()',liczba_szt_dost);
             
+            IF is_number(id_wyposazenia) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawne id_wyposazenia! Podana wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_number(liczba_szt_calk) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawna liczba_szt_calk! Podana wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_number(liczba_szt_dost) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawna liczba_szt_dost! Podana wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            END IF;
+            
             INSERT INTO Wyposazenia(id_wyposazenia, nazwa, liczba_szt_calk, liczba_szt_dost) VALUES(id_wyposazenia, nazwa, liczba_szt_calk, liczba_szt_dost);
          END LOOP;
   
@@ -324,6 +401,14 @@ IS
             domNode := DBMS_XMLDOM.ITEM(domNodeList, idx);
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'id_wyposazenia/text()',id_wyposazenia);
             DBMS_XSLPROCESSOR.VALUEOF(domNode,'id_pokoju/text()',id_pokoju);
+            
+            IF is_number(id_wyposazenia) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawne id_wyposazenia! Podana wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            ELSIF is_number(id_pokoju) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawne id_pokoju! Podana wartosc nie jest wartoscia numeryczna');
+                RETURN;
+            END IF;
             
             INSERT INTO Wyposazenia_pokoi(id_wyposazenia, id_pokoju) VALUES(id_wyposazenia, id_pokoju);
          END LOOP;
