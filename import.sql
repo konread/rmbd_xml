@@ -1,5 +1,5 @@
 /*
-dodawanie uprawnien
+dodawanie uprawnien - trzeba uruchomic jako admin
 */
 CREATE OR REPLACE DIRECTORY 
     XMLFILES 
@@ -27,6 +27,7 @@ IS
     EXCEPTION
         WHEN OTHERS THEN
             DBMS_OUTPUT.PUT_LINE(SQLERRM);
+            RETURN domNodeList;
 END;
 
 -- TEST -->
