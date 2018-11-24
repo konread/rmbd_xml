@@ -191,5 +191,9 @@ IS
         
         DBMS_XMLDOM.WRITETOFILE(doc, 'XMLFILES/' || name_file || '.xml');    
     END;
-    
+
+-- TEST -->  
+
 EXECUTE eksport_do_zaplaty('do_zaplaty')
+
+-- TEST <--  
