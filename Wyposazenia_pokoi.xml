@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wyposazenia_pokoi>
+    <Wyposazenie_pokoju>
+        <id_wyposazenia>1</id_wyposazenia>
+        <id_pokoju>10</id_pokoju>
+    </Wyposazenie_pokoju>
+    <Wyposazenie_pokoju>
+        <id_wyposazenia>2</id_wyposazenia>
+        <id_pokoju>10</id_pokoju>
+    </Wyposazenie_pokoju>
+    <Wyposazenie_pokoju>
+        <id_wyposazenia>2</id_wyposazenia>
+        <id_pokoju>9</id_pokoju>
+    </Wyposazenie_pokoju>
+    <Wyposazenie_pokoju>
+        <id_wyposazenia>2</id_wyposazenia>
+        <id_pokoju>8</id_pokoju>
+    </Wyposazenie_pokoju>
+    <Wyposazenie_pokoju>
+        <id_wyposazenia>2</id_wyposazenia>
+        <id_pokoju>7</id_pokoju>
+    </Wyposazenie_pokoju>
+    <Wyposazenie_pokoju>
+        <id_wyposazenia>2</id_wyposazenia>
+        <id_pokoju>6</id_pokoju>
+    </Wyposazenie_pokoju>
+    <Wyposazenie_pokoju>
+        <id_wyposazenia>2</id_wyposazenia>
+        <id_pokoju>5</id_pokoju>
+    </Wyposazenie_pokoju>
+    <Wyposazenie_pokoju>
+        <id_wyposazenia>2</id_wyposazenia>
+        <id_pokoju>4</id_pokoju>
+    </Wyposazenie_pokoju>
+</Wyposazenia_pokoi>

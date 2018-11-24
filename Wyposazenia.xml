@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wyposazenia>
+    <Wyposazenie>
+        <id_wyposazenia>1</id_wyposazenia>
+        <nazwa>telewizor</nazwa>
+        <liczba_szt_calk>3</liczba_szt_calk>
+        <liczba_szt_dost>2</liczba_szt_dost>
+    </Wyposazenie>
+    <Wyposazenie>
+        <id_wyposazenia>2</id_wyposazenia>
+        <nazwa>parking</nazwa>
+        <liczba_szt_calk>10</liczba_szt_calk>
+        <liczba_szt_dost>3</liczba_szt_dost>
+    </Wyposazenie>
+</Wyposazenia>
