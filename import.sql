@@ -65,7 +65,7 @@ END;
 -- TEST -->
 SET SERVEROUTPUT ON;
 
-SELECT is_number('a') FROM dual;
+SELECT is_number('1') FROM dual;
 
 ROLLBACK;
 -- TEST <--
@@ -120,6 +120,9 @@ IS
             
             IF is_number(id_klienta) = 0 THEN
                 DBMS_OUTPUT.PUT_LINE('Niepoprawne id_klienta! Wartosc nie jest wartoscia numeryczna! Pesel Klienta:' || pesel);
+                RETURN;
+            ELSIF is_number(pesel) = 0 THEN
+                DBMS_OUTPUT.PUT_LINE('Niepoprawny numer pesel! Wartosc nie jest wartoscia numeryczna');
                 RETURN;
             END IF;
             
