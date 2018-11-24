@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Pokoje>
+<Pokoje xsi:noNamespaceSchemaLocation="Pokoje.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Pokoj>
         <id_pokoju>1</id_pokoju>
         <numer>100</numer>

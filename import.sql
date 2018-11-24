@@ -18,9 +18,10 @@ CREATE OR REPLACE FUNCTION odczytPlikuXML(directoryName VARCHAR2, rootNodeName V
 IS
     xmlContent XMLTYPE;
     domNodeList DBMS_XMLDOM.DOMNODELIST;
-    
-    BEGIN
+
+    BEGIN    
         xmlContent := XMLType(BFILENAME(directoryName, rootNodeName || '.xml'), nls_charset_id('AL32UTF8'));
+        XMLTYPE.schemaValidate(xmlContent); 
         domNodeList := DBMS_XSLPROCESSOR.SELECTNODES(DBMS_XMLDOM.MAKENODE(DBMS_XMLDOM.NEWDOMDOCUMENT(xmlContent)), rootNodeName || '/' || childNodeName);
         RETURN domNodeList;
         

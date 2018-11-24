@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Klienci>
+<Klienci xsi:noNamespaceSchemaLocation="Klienci.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <Klient>
         <id_klienta>1</id_klienta>
         <pesel>00000000000</pesel>
